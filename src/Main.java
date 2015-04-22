@@ -1,3 +1,5 @@
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main
@@ -7,14 +9,19 @@ public class Main
     {
         Scanner sc = new Scanner(System.in);
 
-        String input = "1;14344;000010000000002";
+        while(sc.hasNextLine())
+        {
+            String input = sc.nextLine();
 
-        CorrentInput(input);
+            Bot bot = CorrentInput(input);
+
+            System.out.println(bot.getMove());
+        }
 
 
     }
 
-    private static void CorrentInput(String input)
+    private static Bot CorrentInput(String input)
     {
         //Getting Titles
 
@@ -34,6 +41,90 @@ public class Main
         else // For Player 2
             DistanceFromWater = 14 - island.indexOf('2');
 
+        return new Bot(DistanceFromWater,DistanceFromOpponent,Titles);
     }
 
 }
+
+class Bot
+{
+    private int DistanceFromWater;
+    private int DistanceFromOpponent;
+    private int[] Titles;
+
+    public Bot()
+    {
+        //
+    }
+
+    public Bot(int distanceFromWater, int distanceFromOpponent, int[] titles)
+    {
+        DistanceFromWater = distanceFromWater;
+        DistanceFromOpponent = distanceFromOpponent;
+        Titles = titles;
+    }
+
+    private int retreat()
+    {
+        if(!Arrays.asList(Titles).contains(DistanceFromOpponent) && Arrays.asList(Titles).contains(4 - DistanceFromOpponent))
+            return 25;
+
+        return -1;
+    }
+
+    private int move()
+    {
+        if(DistanceFromWater < 4)
+            return 50;
+
+        else
+            return 25;
+    }
+
+
+    private int attack()
+    {
+        if(DistanceFromOpponent > 4)
+            return -1;
+
+        else if(Arrays.asList(Titles).contains(DistanceFromOpponent))
+        {
+            int occurrences = Collections.frequency(Arrays.asList(Titles), DistanceFromOpponent);
+            System.err.println("ENTER");
+            if(occurrences == 1)
+                return 50;
+            else if(occurrences == 2)
+                return 75;
+            else
+                return 100;
+        }
+
+        else
+        return  -1;
+
+    }
+
+    String getMove()
+    {
+        int attack = attack();
+        int retreat = retreat();
+        int move = move();
+
+        int max = Math.max(attack,Math.max(retreat,move));
+
+        System.err.print("Max:" + max + "Attack:" + attack + "Move: " + move + "Retreat:" + retreat);
+
+
+        if(max == attack)
+           return "attack;" + Collections.frequency(Arrays.asList(Titles), DistanceFromOpponent) * DistanceFromOpponent;
+        else if(max == move)
+           return "move;" + Titles[0];
+        else
+           return "retreat" + Titles[0];
+
+    }
+
+}
+
+
+
