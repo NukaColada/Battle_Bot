@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main
@@ -91,6 +92,8 @@ class Bot
 
     public String returnMove()
     {
+        System.err.println(Titles.length);
+        
         if(attack() >= 75)
         {
             String r = "attack;";
@@ -106,30 +109,40 @@ class Bot
         int three = getFrequency(3);
         int four = getFrequency(4);
 
-        int fmax = (Math.max(one, Math.max(two, Math.max(three, four))));
+        int[] fmax = {one,two,three,four};
+        Arrays.sort(fmax);
 
-        if(four == fmax)
-        {
-            if(contains(DistanceFromOpponent - 4))
-                return "move;" + (DistanceFromOpponent - 4);
-        }
-        else if(three == fmax)
-        {
-            if(contains(DistanceFromOpponent - 3))
-                return "move;" + (DistanceFromOpponent - 3);
-        }
-        else if(two == fmax)
-        {
-            if(contains(DistanceFromOpponent - 2))
-                return "move;" + (DistanceFromOpponent - 2);
-        }
-        else if(one == fmax)
-        {
-            if(contains(DistanceFromOpponent - 1))
-                return "move;" + (DistanceFromOpponent - 1);
-        }
+       for(int x=3;x>0;x--)
+       {
+           if (contains(DistanceFromOpponent - fmax[x]))
+               return "move;" + (DistanceFromOpponent - fmax[x]);
+           if(contains(fmax[x] - DistanceFromOpponent))
+               return "retreat;" + (fmax[x] - DistanceFromOpponent);
+       }
 
-        return "NULL";
+        if(DistanceFromOpponent > 4)
+        {
+            if (contains(4))
+                System.out.println("move;4");
+            else if (contains(3))
+                System.out.println("move;3");
+            else if (contains(2))
+                System.out.println("move;2");
+            else if (contains(1))
+                System.out.println("move;1");
+        }
+        else
+        {
+            if (contains(4))
+                System.out.println("retreat;4");
+            else if (contains(3))
+                System.out.println("retreat;3");
+            else if (contains(2))
+                System.out.println("retreat;2");
+            else if (contains(1))
+                System.out.println("retreat;1");
+        }
+        return "shuffle";
     }
 
 
