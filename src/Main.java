@@ -110,13 +110,25 @@ class Bot
         int[] fmax = {one,two,three,four};
         Arrays.sort(fmax);
 
-       for(int x=3;x>0;x--)
+       for(int x=3;x>=0;x--)
        {
-           if (contains(DistanceFromOpponent - fmax[x]))
+           if (contains(DistanceFromOpponent - fmax[x]) && attack() == -1)
                return "move;" + (DistanceFromOpponent - fmax[x]);
            if(contains(fmax[x] - DistanceFromOpponent))
                return "retreat;" + (fmax[x] - DistanceFromOpponent);
        }
+
+        if(DistanceFromOpponent > 4)
+        {
+            if(contains(4))
+                return "move;4";
+            else if(contains(3))
+                return "move;3";
+            else if(contains(2))
+                return "move;2";
+            else if(contains(1))
+                return "move;1";
+        }
 
         suffle ++;
         System.err.print(suffle);
