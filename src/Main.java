@@ -20,10 +20,10 @@ public class Main
 }
 class Bot
 {
-
     private int DistanceFromWater;
     private int DistanceFromOpponent;
     private int[] Titles;
+    private int suffle = 0;
 
     public void setInput(String input)
     {
@@ -92,8 +92,6 @@ class Bot
 
     public String returnMove()
     {
-        System.err.println(Titles.length);
-        
         if(attack() >= 75)
         {
             String r = "attack;";
@@ -120,28 +118,8 @@ class Bot
                return "retreat;" + (fmax[x] - DistanceFromOpponent);
        }
 
-        if(DistanceFromOpponent > 4)
-        {
-            if (contains(4))
-                System.out.println("move;4");
-            else if (contains(3))
-                System.out.println("move;3");
-            else if (contains(2))
-                System.out.println("move;2");
-            else if (contains(1))
-                System.out.println("move;1");
-        }
-        else
-        {
-            if (contains(4))
-                System.out.println("retreat;4");
-            else if (contains(3))
-                System.out.println("retreat;3");
-            else if (contains(2))
-                System.out.println("retreat;2");
-            else if (contains(1))
-                System.out.println("retreat;1");
-        }
+        suffle ++;
+        System.err.print(suffle);
         return "shuffle";
     }
 
